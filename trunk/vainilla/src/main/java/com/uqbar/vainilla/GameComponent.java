@@ -12,6 +12,8 @@ public class GameComponent<SceneType extends GameScene> {
 	private Appearance appearance;
 	private double x;
 	private double y;
+	private double width;
+	private double height;
 	private int z;
 	private boolean destroyPending;
 
@@ -20,17 +22,24 @@ public class GameComponent<SceneType extends GameScene> {
 	// ****************************************************************
 
 	public GameComponent() {
-		this(new Invisible(), 0, 0);
+		this(new Invisible(), 0, 0, 0, 0);
 	}
 
 	public GameComponent(double x, double y) {
-		this(new Invisible(), x, y);
+		this(new Invisible(), x, y, 0, 0);
 	}
 
-	public GameComponent(Appearance appearance, double x, double y) {
+	public GameComponent(double x, double y, double w, double h) {
+		this(new Invisible(), x, y, w, h);
+	}
+
+	public GameComponent(Appearance appearance, double x, double y, double w,
+			double h) {
 		this.setAppearance(appearance);
 		this.setX(x);
 		this.setY(y);
+		this.setWidth(w);
+		this.setHeight(h);
 	}
 
 	// ****************************************************************
@@ -39,6 +48,22 @@ public class GameComponent<SceneType extends GameScene> {
 
 	public Game getGame() {
 		return this.getScene().getGame();
+	}
+
+	public double getTopBorder() {
+		return this.getY();
+	}
+
+	public double getBottomBorder() {
+		return this.getY() + this.getHeight();
+	}
+
+	public double getLeftBorder() {
+		return this.getX();
+	}
+
+	public double getRightBorder() {
+		return this.getX() + this.getWidth();
 	}
 
 	// ****************************************************************
@@ -55,6 +80,22 @@ public class GameComponent<SceneType extends GameScene> {
 	public void move(double dx, double dy) {
 		this.setX(this.getX() + dx);
 		this.setY(this.getY() + dy);
+	}
+
+	public void insideMove(double dx, double dy) {
+		this.move(dx, dy);
+		if (this.getBottomBorder() > this.getGame().getBottomBorder()) {
+			this.setY(this.getGame().getBottomBorder() - this.getHeight());
+		}
+		if (this.getTopBorder() < this.getGame().getTopBorder()) {
+			this.setY(this.getGame().getTopBorder());
+		}
+		if (this.getRightBorder() > this.getGame().getRightBorder()) {
+			this.setX(this.getGame().getRightBorder() - this.getWidth());
+		}
+		if (this.getLeftBorder() < this.getGame().getLeftBorder()) {
+			this.setX(this.getLeftBorder());
+		}
 	}
 
 	public void destroy() {
@@ -92,24 +133,24 @@ public class GameComponent<SceneType extends GameScene> {
 	public void alignCloserBoundTo(GameComponent<?> target) {
 		Appearance ownBounds = this.getAppearance();
 		Appearance targetBounds = target.getAppearance();
-		double bottomDistance = abs(ownBounds.getHeight() + this.getY() - target.getY());
+		double bottomDistance = abs(ownBounds.getHeight() + this.getY()
+				- target.getY());
 		double targetRight = target.getX() + targetBounds.getWidth();
 		double leftDistance = abs(this.getX() - targetRight);
 		double targetBottom = target.getY() + targetBounds.getHeight();
 		double topDistance = abs(this.getY() - targetBottom);
-		double rightDistance = abs(this.getX() + ownBounds.getWidth() - target.getX());
-		double minDistance = min(bottomDistance, min(leftDistance, min(topDistance, rightDistance)));
+		double rightDistance = abs(this.getX() + ownBounds.getWidth()
+				- target.getX());
+		double minDistance = min(bottomDistance,
+				min(leftDistance, min(topDistance, rightDistance)));
 
-		if(minDistance == bottomDistance) {
+		if (minDistance == bottomDistance) {
 			this.alignBottomTo(target.getY());
-		}
-		else if(minDistance == leftDistance) {
+		} else if (minDistance == leftDistance) {
 			this.alignLeftTo(targetRight);
-		}
-		else if(minDistance == topDistance) {
+		} else if (minDistance == topDistance) {
 			this.alignTopTo(targetBottom);
-		}
-		else {
+		} else {
 			this.alignRightTo(target.getX());
 		}
 	}
@@ -168,6 +209,22 @@ public class GameComponent<SceneType extends GameScene> {
 
 	public void setZ(int z) {
 		this.z = z;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
 	}
 
 	public boolean isDestroyPending() {

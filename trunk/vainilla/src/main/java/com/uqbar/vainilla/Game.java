@@ -39,6 +39,22 @@ public abstract class Game {
 	public int getDisplayHeight() {
 		return this.getDisplaySize().height;
 	}
+	
+	public int getLeftBorder() {
+		return 0;
+	}
+
+	public int getRightBorder() {
+		return this.getDisplayWidth();
+	}
+	
+	public int getTopBorder() {
+		return 0;
+	}
+	
+	public int getBottomBorder() {
+		return this.getDisplayHeight();
+	}
 
 	public abstract Dimension getDisplaySize();
 
