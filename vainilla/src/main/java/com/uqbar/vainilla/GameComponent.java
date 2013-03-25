@@ -84,6 +84,10 @@ public class GameComponent<SceneType extends GameScene> {
 
 	public void insideMove(double dx, double dy) {
 		this.move(dx, dy);
+		this.correctPosToInsideBorders();
+	}
+
+	private void correctPosToInsideBorders() {
 		if (this.getBottomBorder() > this.getGame().getBottomBorder()) {
 			this.setY(this.getGame().getBottomBorder() - this.getHeight());
 		}
