@@ -12,8 +12,8 @@ public class GameComponent<SceneType extends GameScene> {
 	private Appearance appearance;
 	private double x;
 	private double y;
-	private double width;
-	private double height;
+	private int width;
+	private int height;
 	private int z;
 	private boolean destroyPending;
 
@@ -29,12 +29,11 @@ public class GameComponent<SceneType extends GameScene> {
 		this(new Invisible(), x, y, 0, 0);
 	}
 
-	public GameComponent(double x, double y, double w, double h) {
+	public GameComponent(double x, double y, int w, int h) {
 		this(new Invisible(), x, y, w, h);
 	}
 
-	public GameComponent(Appearance appearance, double x, double y, double w,
-			double h) {
+	public GameComponent(Appearance appearance, double x, double y, int w, int h) {
 		this.setAppearance(appearance);
 		this.setX(x);
 		this.setY(y);
@@ -84,21 +83,23 @@ public class GameComponent<SceneType extends GameScene> {
 
 	public void insideMove(double dx, double dy) {
 		this.move(dx, dy);
-		this.correctPosToInsideBorders();
+		this.correctPos(this.getGame().getLeftBorder(), this.getGame()
+				.getTopBorder(), this.getGame().getRightBorder(), this
+				.getGame().getBottomBorder());
 	}
 
-	private void correctPosToInsideBorders() {
-		if (this.getBottomBorder() > this.getGame().getBottomBorder()) {
-			this.setY(this.getGame().getBottomBorder() - this.getHeight());
+	public void correctPos(double x2, double y2, int w2, int h2) {
+		if (this.getBottomBorder() > h2) {
+			this.move(0, h2 - this.getBottomBorder());
 		}
-		if (this.getTopBorder() < this.getGame().getTopBorder()) {
-			this.setY(this.getGame().getTopBorder());
+		if (this.getTopBorder() < y2) {
+			this.move(0, y2 - this.getHeight());
 		}
-		if (this.getRightBorder() > this.getGame().getRightBorder()) {
-			this.setX(this.getGame().getRightBorder() - this.getWidth());
+		if (this.getRightBorder() > w2) {
+			this.move(w2 - this.getRightBorder(), 0);
 		}
-		if (this.getLeftBorder() < this.getGame().getLeftBorder()) {
-			this.setX(this.getLeftBorder());
+		if (this.getLeftBorder() < x2) {
+			this.move(x2 - this.getLeftBorder(), 0);
 		}
 	}
 
@@ -215,19 +216,19 @@ public class GameComponent<SceneType extends GameScene> {
 		this.z = z;
 	}
 
-	public double getWidth() {
+	public int getWidth() {
 		return width;
 	}
 
-	public void setWidth(double width) {
+	public void setWidth(int width) {
 		this.width = width;
 	}
 
-	public double getHeight() {
+	public int getHeight() {
 		return height;
 	}
 
-	public void setHeight(double height) {
+	public void setHeight(int height) {
 		this.height = height;
 	}
 

@@ -1,19 +1,18 @@
 package ar.edu.sawady.application;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
 
-import ar.edu.sawady.components.Block;
-import ar.edu.sawady.components.Bolita;
+import ar.edu.sawady.scenes.ArkanoidLevelScene;
 
 import com.uqbar.vainilla.DesktopGameLauncher;
 import com.uqbar.vainilla.Game;
 
 public class ArkanoidGame extends Game {
-
-	private List<Block> bloques;
+	
+	public ArkanoidGame() {
+		super();
+		this.setCurrentScene(new ArkanoidLevelScene());
+	}
 
 	@Override
 	public Dimension getDisplaySize() {
@@ -32,22 +31,7 @@ public class ArkanoidGame extends Game {
 
 	@Override
 	protected void setUpScenes() {
-		// Abstraer a un objeto colleccion de bloques
-		bloques = new ArrayList<Block>();
-		int separation_x = 5;
-		int separation_y = 5;
-		int cantBlocksX = this.getRightBorder() / (separation_x + Block.BLOCK_WIDTH);
-		int offsetX = this.getRightBorder() % (separation_x + Block.BLOCK_WIDTH);
 		
-		for (int i = 0; i < cantBlocksX; i++) {
-			for (int j = 0; j < 5; j++) {
-				 Block b = new Block(i * (separation_x + Block.BLOCK_WIDTH) + offsetX / 2, 
-						 			 j * (separation_y + Block.BLOCK_HEIGHT) + 10, 
-						 			 Color.BLUE);
-				 bloques.add(b);
-				 this.getCurrentScene().addComponent(b);
-			}
-		}
 	}
 
 	public static void main(String[] args) {

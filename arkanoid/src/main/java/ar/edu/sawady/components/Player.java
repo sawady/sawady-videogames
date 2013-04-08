@@ -13,9 +13,9 @@ public class Player extends GameComponent<GameScene> {
 	public static final int DEFAULT_WIDTH = 40;
 	public static final int DEFAULT_HEIGHT = 15;
 	
-	public Player(double x, double y, Color color) {
+	public Player(double x, double y) {
 		super(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		this.setAppearance(new Rectangle(color, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		this.setAppearance(new Rectangle(Color.GREEN, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 	
 	@Override
