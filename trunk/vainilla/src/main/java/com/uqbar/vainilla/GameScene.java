@@ -105,11 +105,16 @@ public class GameScene {
 				this.removeComponent(component);
 			}
 			else {
+				this.update(state);
 				component.update(state);
 				component.render(graphics);
 			}
 		}
 	}
+	
+	protected void update(DeltaState state) {
+		
+	}	
 
 	// ****************************************************************
 	// ** ACCESS OPERATIONS
@@ -150,6 +155,10 @@ public class GameScene {
 		for(GameComponent<?> component : components) {
 			this.removeComponent(component);
 		}
+	}
+	
+	public void resetScene() {
+		this.getComponents().clear();
 	}
 
 	// ****************************************************************
