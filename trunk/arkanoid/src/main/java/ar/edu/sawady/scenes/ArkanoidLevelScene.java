@@ -15,16 +15,20 @@ import ar.edu.sawady.components.Live;
 import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.GameScene;
+import com.uqbar.vainilla.colissions.Bounds;
 import com.uqbar.vainilla.colissions.CollisionDetector;
 import com.uqbar.vainilla.events.constants.Key;
 import com.uqbar.vainilla.exceptions.GameException;
 
 public class ArkanoidLevelScene extends GameScene {
 
+	private static final String YOU_LOSE = "You Lose!";
+	private static final String YOU_WIN = "You Win!";
 	private List<Block> bloques;
 	private Ball ball;
 	private Player player;
 	private List<Live> lives;
+	private boolean finish = false;
 
 	@Override
 	public void onSetAsCurrent() {
@@ -44,6 +48,17 @@ public class ArkanoidLevelScene extends GameScene {
 		if (state.isKeyPressed(Key.SPACE)) {
 			this.resetScene();
 		}
+		if (state.isKeyPressed(Key.Q)) {
+			for(GameComponent<?> g : this.bloques){
+				g.destroy();
+			}
+			this.bloques.clear();
+		}
+		if (this.bloques.isEmpty() && !this.finish) {
+			this.addComponent(new FinishedGameText(YOU_WIN));
+			this.ball.destroy();
+			this.finish = true;			
+		}
 	}
 
 	private void initializeComponents() {
@@ -57,9 +72,9 @@ public class ArkanoidLevelScene extends GameScene {
 		bloques = new ArrayList<Block>();
 		int separation_x = 5;
 		int separation_y = 5;
-		int cantBlocksX = this.getGame().getRightBorder()
+		int cantBlocksX = this.getGame().getRight()
 				/ (separation_x + Block.BLOCK_WIDTH);
-		int offsetX = this.getGame().getRightBorder()
+		int offsetX = this.getGame().getRight()
 				% (separation_x + Block.BLOCK_WIDTH);
 
 		for (int i = 0; i < cantBlocksX; i++) {
@@ -75,9 +90,10 @@ public class ArkanoidLevelScene extends GameScene {
 
 	private void initializeLives() {
 		this.lives = new ArrayList<Live>();
-		Live l = new Live();
-		this.addComponent(l);
-		this.lives.add(l);
+		this.lives.add(new Live());
+		this.lives.add(new Live());
+		this.lives.add(new Live());
+		this.addComponents(this.lives);
 	}
 
 	private void createPlayer() {
@@ -86,18 +102,11 @@ public class ArkanoidLevelScene extends GameScene {
 	}
 
 	private void createNewBall() {
-		this.ball = new Ball(this.getBounds().getCenterX(), this.getBounds().getCenterY(), 100);
+		this.ball = new Ball(this.getBounds().getCenterX(), this.getBounds().getCenterY(), Ball.DEFAULT_SIZE);
 		this.addComponent(this.ball);
 	}
 
-	public void blockDown() {
-		if (this.bloques.isEmpty()) {
-			this.addComponent(new FinishedGameText("You Win!"));
-		}
-	}
-
 	public void liveDown() {
-
 		Live l = this.lives.get(0);
 		this.lives.remove(0);
 		l.destroy();
@@ -107,7 +116,7 @@ public class ArkanoidLevelScene extends GameScene {
 			this.createNewBall();
 		} else {
 			this.player.destroy();
-			this.addComponent(new FinishedGameText("You Lose!"));
+			this.addComponent(new FinishedGameText(YOU_LOSE));
 		}
 	}
 
@@ -116,10 +125,7 @@ public class ArkanoidLevelScene extends GameScene {
 		Iterator<Block> it = this.bloques.iterator();
 		while (!res && it.hasNext()) {
 			Block b = it.next();
-			if (CollisionDetector.INSTANCE.collidesRectAgainstRect(
-					aBall.getX(), aBall.getY(), aBall.getBounds().getWidth(),
-					aBall.getBounds().getHeight(), b.getX(), b.getY(), b
-							.getBounds().getWidth(), b.getBounds().getHeight())) {
+			if (CollisionDetector.INSTANCE.collidesRectAgainstRect(aBall.getBounds(), b.getBounds())) {
 				res = true;
 				b.destroy();
 				this.bloques.remove(b);
@@ -129,16 +135,12 @@ public class ArkanoidLevelScene extends GameScene {
 	}
 
 	public boolean checkPlayerCollide(Ball aBall) {
-		boolean b = CollisionDetector.INSTANCE.collidesRectAgainstRect(aBall
-				.getX(), aBall.getY(), aBall.getBounds().getWidth(), aBall
-				.getBounds().getHeight(), this.player.getX(), this.player
-				.getY(), this.player.getBounds().getWidth(), this.player
-				.getBounds().getHeight());
-		if (b) {
-			// aBall.correctPos(this.player.getX(), this.player.getY(),
-			// this.player.getBounds().getWidth(),
-			// this.player.getBounds().getHeight());
-		}
+		boolean b = CollisionDetector.INSTANCE.collidesRectAgainstRect(aBall.getBounds(), this.player.getBounds());
+//		if (b) {
+//			 aBall.correctPos(new Bounds(this.player.getBounds().getX()+1, this.player.getBounds().getY()-1,
+//			 this.player.getBounds().getWidth(),
+//			 this.player.getBounds().getHeight()));
+//		}
 		return b;
 	}
 }

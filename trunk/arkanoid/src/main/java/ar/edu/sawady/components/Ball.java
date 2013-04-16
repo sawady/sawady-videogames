@@ -11,9 +11,10 @@ import com.uqbar.vainilla.appearances.Circle;
 import com.uqbar.vainilla.colissions.Bounds;
 
 public class Ball extends GameComponent<ArkanoidLevelScene> {
-	private int i = 200;
-	private int j = 200;
-	private int diameter = 50;
+	public static final int DEFAULT_SIZE = 20;
+	private int i = 250;
+	private int j = 250;
+	private int diameter;
 	private Color color = Color.RED;
 
 	public Ball(double x, double y, int aDiameter) {
@@ -41,9 +42,9 @@ public class Ball extends GameComponent<ArkanoidLevelScene> {
 			this.i *= -1;
 		}
 		
-//		if(this.getBottomBorder() >= this.getGame().getBottomBorder()) {
-//			this.getScene().liveDown();
-//		}
+		if(this.getBounds().getBottom() >= this.getScene().getBounds().getBottom()) {
+			this.getScene().liveDown();
+		}
 		
 	}
 }

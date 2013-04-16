@@ -8,6 +8,7 @@ import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.GameScene;
 import com.uqbar.vainilla.appearances.Rectangle;
 import com.uqbar.vainilla.colissions.Bounds;
+import com.uqbar.vainilla.events.constants.Key;
 
 public class Player extends GameComponent<GameScene> {
 	
@@ -25,7 +26,16 @@ public class Player extends GameComponent<GameScene> {
 		
 		Point2D.Double mouse_pos = deltaState.getCurrentMousePosition();
 		
-		this.setX(mouse_pos.x);
+		this.changePos(mouse_pos.getX(), this.getY());
+		
+		if(deltaState.isKeyPressed(Key.LEFT)) {
+			
+		} else if(deltaState.isKeyPressed(Key.RIGHT)) {
+			
+		} else if(deltaState.isKeyPressed(Key.UP)) {
+			
+		}
+		
 	}
 
 }

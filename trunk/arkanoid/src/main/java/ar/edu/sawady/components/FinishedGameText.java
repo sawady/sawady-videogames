@@ -22,8 +22,8 @@ public class FinishedGameText extends GameComponent<ArkanoidLevelScene> {
 	@Override
 	public void update(DeltaState deltaState) {
 		super.update(deltaState);
-		this.setY(this.getGame().getDisplayWidth() / 2);
-		this.setX(this.getGame().getDisplayHeight() / 2);
+		this.changePos(this.getScene().getBounds().getCenterX(), this.getScene().getBounds().getCenterY());
+		this.alignHorizontalCenterTo(this.getScene().getBounds().getCenterX());
 	}
 
 }
