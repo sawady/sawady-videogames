@@ -67,6 +67,21 @@ public class GameComponent<SceneType extends GameScene> {
 		this.getBounds().addX(dx);
 		this.getBounds().addY(dy);
 	}
+	
+	public void changePosX(double x) {
+		changePos(x, this.getY());
+	}
+	
+	public void changePosY(double y) {
+		changePos(this.getX(), y);
+	}
+	
+	public void changePos(double x, double y) {
+		this.setX(x);
+		this.setY(y);
+		this.getBounds().addX(x - this.getBounds().getX());
+		this.getBounds().addY(this.getBounds().getY() - y);
+	}
 
 	public void correctPos(Bounds other) {
 		if (this.getBounds().getBottom() >  other.getBottom()) {
@@ -82,21 +97,6 @@ public class GameComponent<SceneType extends GameScene> {
 			this.move(other.getLeft() - this.getBounds().getLeft(), 0);
 		}
 	}
-
-//	public void correctPos(double x2, double y2, double d, double e) {
-//		if (this.getBottomBorder() > e) {
-//			this.move(0, e - this.getBottomBorder());
-//		}
-//		if (this.getTopBorder() < y2) {
-//			this.move(0, y2 - this);
-//		}
-//		if (this.getRightBorder() > d) {
-//			this.move(d - this.getRightBorder(), 0);
-//		}
-//		if (this.getLeftBorder() < x2) {
-//			this.move(x2 - this.getLeftBorder(), 0);
-//		}
-//	}
 
 	public void destroy() {
 		this.setDestroyPending(true);
@@ -191,8 +191,7 @@ public class GameComponent<SceneType extends GameScene> {
 		return this.x;
 	}
 
-	public void setX(double x) {
-		this.getBounds().addX(x - this.x);
+	private void setX(double x) {
 		this.x = x;
 	}
 
@@ -200,8 +199,7 @@ public class GameComponent<SceneType extends GameScene> {
 		return this.y;
 	}
 
-	public void setY(double y) {
-//		this.getBounds().addY(this.y - y);
+	private void setY(double y) {
 		this.y = y;
 	}
 
