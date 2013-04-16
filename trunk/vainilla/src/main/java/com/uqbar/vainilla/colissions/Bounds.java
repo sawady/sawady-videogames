@@ -57,28 +57,36 @@ public class Bounds {
 				&& bounds.getTop() >= this.getTop()
 				&& bounds.getBottom() <= this.getBottom();
 	}
+	
+	public void addX(double n) {
+		this.setX(this.getX() + n);
+	}
+
+	public void addY(double n) {
+		this.setY(this.getY() + n);
+	}
 
 	// ****************************************************************
 	// ** ACCESSORS
 	// ****************************************************************
 
-	protected double getX() {
+	public double getX() {
 		return this.x;
 	}
-
-	protected void setX(double x) {
+	
+	public void setX(double x) {
 		this.x = x;
 	}
 
-	protected double getY() {
+	public double getY() {
 		return this.y;
 	}
 
-	protected void setY(double y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 
-	protected void setWidth(double width) {
+	public void setWidth(double width) {
 		this.width = width;
 	}
 
@@ -86,7 +94,7 @@ public class Bounds {
 		return this.width;
 	}
 
-	protected void setHeight(double height) {
+	public void setHeight(double height) {
 		this.height = height;
 	}
 

@@ -40,7 +40,7 @@ public abstract class Game {
 		return this.getDisplaySize().height;
 	}
 	
-	public int getLeftBorder() {
+	public int getLeft() {
 		return 0;
 	}
 

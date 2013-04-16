@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import com.uqbar.vainilla.colissions.Bounds;
 import com.uqbar.vainilla.events.EventQueue;
 import com.uqbar.vainilla.events.GameEvent;
 
 public class GameScene {
 
 	private Game game;
+	private Bounds bounds;
 	private List<GameComponent<?>> components;
 	private EventQueue eventQueue;
 	private double lastUpdateTime;
@@ -28,10 +31,11 @@ public class GameScene {
 		this(Arrays.asList(components));
 	}
 
-	public GameScene(Collection<? extends GameComponent<? extends GameScene>> components) {
+	public GameScene(
+			Collection<? extends GameComponent<? extends GameScene>> components) {
 		this();
 
-		for(GameComponent<? extends GameScene> component : components) {
+		for (GameComponent<? extends GameScene> component : components) {
 			this.addComponent(component);
 		}
 	}
@@ -53,22 +57,22 @@ public class GameScene {
 		int higherIndex = this.getComponentCount() - 1;
 		int searchedZ = component.getZ();
 
-		if(this.getComponents().isEmpty() || searchedZ < this.getZFromComponentAt(lowerIndex)) {
+		if (this.getComponents().isEmpty()
+				|| searchedZ < this.getZFromComponentAt(lowerIndex)) {
 			return 0;
 		}
 
-		if(searchedZ >= this.getZFromComponentAt(higherIndex)) {
+		if (searchedZ >= this.getZFromComponentAt(higherIndex)) {
 			return this.getComponentCount();
 		}
 
-		while(lowerIndex <= higherIndex) {
+		while (lowerIndex <= higherIndex) {
 			int middleIndex = lowerIndex + higherIndex >>> 1;
 			int middleZ = this.getZFromComponentAt(middleIndex);
 
-			if(middleZ <= searchedZ) {
+			if (middleZ <= searchedZ) {
 				lowerIndex = middleIndex + 1;
-			}
-			else if(middleZ > searchedZ) {
+			} else if (middleZ > searchedZ) {
 				higherIndex = middleIndex - 1;
 			}
 		}
@@ -81,7 +85,7 @@ public class GameScene {
 	// ****************************************************************
 
 	public void onSetAsCurrent() {
-		for(GameComponent<?> component : this.components) {
+		for (GameComponent<?> component : this.components) {
 			component.onSceneActivated();
 		}
 	}
@@ -92,29 +96,30 @@ public class GameScene {
 
 	public void takeStep(Graphics2D graphics) {
 		long now = System.nanoTime();
-		double delta = this.getLastUpdateTime() > 0 ? (now - this.getLastUpdateTime()) / 1000000000L : 0;
-		if(delta > 1) {
+		double delta = this.getLastUpdateTime() > 0 ? (now - this
+				.getLastUpdateTime()) / 1000000000L : 0;
+		if (delta > 1) {
 			delta = 0;
 		}
 		this.setLastUpdateTime(now);
 
 		DeltaState state = this.getEventQueue().takeState(delta);
 
-		for(GameComponent<?> component : new ArrayList<GameComponent<?>>(this.getComponents())) {
-			if(component.isDestroyPending()) {
+		for (GameComponent<?> component : new ArrayList<GameComponent<?>>(
+				this.getComponents())) {
+			if (component.isDestroyPending()) {
 				this.removeComponent(component);
-			}
-			else {
+			} else {
 				this.update(state);
 				component.update(state);
 				component.render(graphics);
 			}
 		}
 	}
-	
+
 	protected void update(DeltaState state) {
-		
-	}	
+
+	}
 
 	// ****************************************************************
 	// ** ACCESS OPERATIONS
@@ -128,13 +133,13 @@ public class GameScene {
 	}
 
 	public void addComponents(GameComponent<?>... components) {
-		for(GameComponent<?> component : components) {
+		for (GameComponent<?> component : components) {
 			this.addComponent(component);
 		}
 	}
 
 	public void addComponents(Collection<? extends GameComponent<?>> components) {
-		for(GameComponent<?> component : components) {
+		for (GameComponent<?> component : components) {
 			this.addComponent(component);
 		}
 	}
@@ -146,17 +151,18 @@ public class GameScene {
 	}
 
 	public void removeComponents(GameComponent<?>... components) {
-		for(GameComponent<?> component : components) {
+		for (GameComponent<?> component : components) {
 			this.removeComponent(component);
 		}
 	}
 
-	public void removeComponents(Collection<? extends GameComponent<?>> components) {
-		for(GameComponent<?> component : components) {
+	public void removeComponents(
+			Collection<? extends GameComponent<?>> components) {
+		for (GameComponent<?> component : components) {
 			this.removeComponent(component);
 		}
 	}
-	
+
 	public void resetScene() {
 		this.getComponents().clear();
 	}
@@ -171,6 +177,9 @@ public class GameScene {
 
 	public void setGame(Game game) {
 		this.game = game;
+		this.setBounds(new Bounds(this.game.getLeft(), this.game
+				.getTopBorder(), this.game.getRightBorder(), this.game
+				.getBottomBorder()));
 	}
 
 	protected List<GameComponent<?>> getComponents() {
@@ -195,6 +204,14 @@ public class GameScene {
 
 	public void setLastUpdateTime(double lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+
+	public Bounds getBounds() {
+		return bounds;
+	}
+
+	public void setBounds(Bounds bounds) {
+		this.bounds = bounds;
 	}
 
 }
