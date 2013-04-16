@@ -22,7 +22,7 @@ public class DemoGame extends Game {
 
 	@Override
 	protected void setUpScenes() {
-		this.getCurrentScene().addComponent(new Bolita(200, 200));
+		this.getCurrentScene().addComponent(new Bolita(200, 200, 100));
 	}
 
 	public static void main(String[] args) {
