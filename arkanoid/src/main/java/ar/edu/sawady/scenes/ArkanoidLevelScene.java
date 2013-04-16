@@ -86,8 +86,7 @@ public class ArkanoidLevelScene extends GameScene {
 	}
 
 	private void createNewBall() {
-		this.ball = new Ball(this.getGame().getDisplayWidth() / 2, this
-				.getGame().getDisplayHeight() / 2);
+		this.ball = new Ball(this.getBounds().getCenterX(), this.getBounds().getCenterY(), 100);
 		this.addComponent(this.ball);
 	}
 
@@ -118,9 +117,9 @@ public class ArkanoidLevelScene extends GameScene {
 		while (!res && it.hasNext()) {
 			Block b = it.next();
 			if (CollisionDetector.INSTANCE.collidesRectAgainstRect(
-					aBall.getX(), aBall.getY(), aBall.getWidth(),
-					aBall.getHeight(), b.getX(), b.getY(), b.getWidth(),
-					b.getHeight())) {
+					aBall.getX(), aBall.getY(), aBall.getBounds().getWidth(),
+					aBall.getBounds().getHeight(), b.getX(), b.getY(), b
+							.getBounds().getWidth(), b.getBounds().getHeight())) {
 				res = true;
 				b.destroy();
 				this.bloques.remove(b);
@@ -130,13 +129,15 @@ public class ArkanoidLevelScene extends GameScene {
 	}
 
 	public boolean checkPlayerCollide(Ball aBall) {
-		boolean b = CollisionDetector.INSTANCE.collidesRectAgainstRect(
-				aBall.getX(), aBall.getY(), aBall.getWidth(),
-				aBall.getHeight(), this.player.getX(), this.player.getY(),
-				this.player.getWidth(), this.player.getHeight());
+		boolean b = CollisionDetector.INSTANCE.collidesRectAgainstRect(aBall
+				.getX(), aBall.getY(), aBall.getBounds().getWidth(), aBall
+				.getBounds().getHeight(), this.player.getX(), this.player
+				.getY(), this.player.getBounds().getWidth(), this.player
+				.getBounds().getHeight());
 		if (b) {
-			aBall.correctPos(this.player.getX(), this.player.getY(),
-					this.player.getWidth(), this.player.getHeight());
+			// aBall.correctPos(this.player.getX(), this.player.getY(),
+			// this.player.getBounds().getWidth(),
+			// this.player.getBounds().getHeight());
 		}
 		return b;
 	}

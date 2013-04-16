@@ -7,6 +7,7 @@ import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.GameScene;
 import com.uqbar.vainilla.appearances.Rectangle;
+import com.uqbar.vainilla.colissions.Bounds;
 
 public class Player extends GameComponent<GameScene> {
 	
@@ -14,7 +15,7 @@ public class Player extends GameComponent<GameScene> {
 	public static final int DEFAULT_HEIGHT = 15;
 	
 	public Player(double x, double y) {
-		super(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(x, y, new Bounds(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		this.setAppearance(new Rectangle(Color.GREEN, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 	
