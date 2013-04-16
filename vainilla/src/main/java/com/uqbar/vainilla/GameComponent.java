@@ -2,9 +2,12 @@ package com.uqbar.vainilla;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
+
 import java.awt.Graphics2D;
+
 import com.uqbar.vainilla.appearances.Appearance;
 import com.uqbar.vainilla.appearances.Invisible;
+import com.uqbar.vainilla.colissions.Bounds;
 
 public class GameComponent<SceneType extends GameScene> {
 
@@ -12,8 +15,7 @@ public class GameComponent<SceneType extends GameScene> {
 	private Appearance appearance;
 	private double x;
 	private double y;
-	private int width;
-	private int height;
+	private Bounds bounds;
 	private int z;
 	private boolean destroyPending;
 
@@ -22,23 +24,22 @@ public class GameComponent<SceneType extends GameScene> {
 	// ****************************************************************
 
 	public GameComponent() {
-		this(new Invisible(), 0, 0, 0, 0);
+		this(new Invisible(), 0, 0, new Bounds(0,0,0,0));
 	}
 
 	public GameComponent(double x, double y) {
-		this(new Invisible(), x, y, 0, 0);
+		this(new Invisible(), x, y, new Bounds(0,0,0,0));
 	}
 
-	public GameComponent(double x, double y, int w, int h) {
-		this(new Invisible(), x, y, w, h);
+	public GameComponent(double x, double y, Bounds bound) {
+		this(new Invisible(), x, y, bound);
 	}
 
-	public GameComponent(Appearance appearance, double x, double y, int w, int h) {
+	public GameComponent(Appearance appearance, double x, double y, Bounds bound) {
 		this.setAppearance(appearance);
 		this.setX(x);
 		this.setY(y);
-		this.setWidth(w);
-		this.setHeight(h);
+		this.setBounds(bound);
 	}
 
 	// ****************************************************************
@@ -47,22 +48,6 @@ public class GameComponent<SceneType extends GameScene> {
 
 	public Game getGame() {
 		return this.getScene().getGame();
-	}
-
-	public double getTopBorder() {
-		return this.getY();
-	}
-
-	public double getBottomBorder() {
-		return this.getY() + this.getHeight();
-	}
-
-	public double getLeftBorder() {
-		return this.getX();
-	}
-
-	public double getRightBorder() {
-		return this.getX() + this.getWidth();
 	}
 
 	// ****************************************************************
@@ -79,29 +64,39 @@ public class GameComponent<SceneType extends GameScene> {
 	public void move(double dx, double dy) {
 		this.setX(this.getX() + dx);
 		this.setY(this.getY() + dy);
+		this.getBounds().addX(dx);
+		this.getBounds().addY(dy);
 	}
 
-	public void insideMove(double dx, double dy) {
-		this.move(dx, dy);
-		this.correctPos(this.getGame().getLeftBorder(), this.getGame()
-				.getTopBorder(), this.getGame().getRightBorder(), this
-				.getGame().getBottomBorder());
+	public void correctPos(Bounds other) {
+		if (this.getBounds().getBottom() >  other.getBottom()) {
+			this.move(0,  other.getBottom() - this.getBounds().getBottom());
+		}
+		if (this.getBounds().getTop() < other.getTop()) {
+			this.move(0, other.getTop() - this.getBounds().getTop());
+		}
+		if (this.getBounds().getRight() > other.getRight()) {
+			this.move(other.getRight() - this.getBounds().getRight(), 0);
+		}
+		if (this.getBounds().getLeft() < other.getLeft()) {
+			this.move(other.getLeft() - this.getBounds().getLeft(), 0);
+		}
 	}
 
-	public void correctPos(double x2, double y2, int w2, int h2) {
-		if (this.getBottomBorder() > h2) {
-			this.move(0, h2 - this.getBottomBorder());
-		}
-		if (this.getTopBorder() < y2) {
-			this.move(0, y2 - this.getHeight());
-		}
-		if (this.getRightBorder() > w2) {
-			this.move(w2 - this.getRightBorder(), 0);
-		}
-		if (this.getLeftBorder() < x2) {
-			this.move(x2 - this.getLeftBorder(), 0);
-		}
-	}
+//	public void correctPos(double x2, double y2, double d, double e) {
+//		if (this.getBottomBorder() > e) {
+//			this.move(0, e - this.getBottomBorder());
+//		}
+//		if (this.getTopBorder() < y2) {
+//			this.move(0, y2 - this);
+//		}
+//		if (this.getRightBorder() > d) {
+//			this.move(d - this.getRightBorder(), 0);
+//		}
+//		if (this.getLeftBorder() < x2) {
+//			this.move(x2 - this.getLeftBorder(), 0);
+//		}
+//	}
 
 	public void destroy() {
 		this.setDestroyPending(true);
@@ -216,20 +211,12 @@ public class GameComponent<SceneType extends GameScene> {
 		this.z = z;
 	}
 
-	public int getWidth() {
-		return width;
+	public Bounds getBounds() {
+		return bounds;
 	}
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
+	public void setBounds(Bounds bounds) {
+		this.bounds = bounds;
 	}
 
 	public boolean isDestroyPending() {
