@@ -44,15 +44,15 @@ public abstract class Game {
 		return 0;
 	}
 
-	public int getRightBorder() {
+	public int getRight() {
 		return this.getDisplayWidth();
 	}
 	
-	public int getTopBorder() {
+	public int getTop() {
 		return 0;
 	}
 	
-	public int getBottomBorder() {
+	public int getBottom() {
 		return this.getDisplayHeight();
 	}
 

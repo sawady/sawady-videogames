@@ -177,9 +177,10 @@ public class GameScene {
 
 	public void setGame(Game game) {
 		this.game = game;
-		this.setBounds(new Bounds(this.game.getLeft(), this.game
-				.getTopBorder(), this.game.getRightBorder(), this.game
-				.getBottomBorder()));
+		if(game != null) {
+			this.setBounds(new Bounds(game.getLeft(), game.getTop(), game
+					.getRight(), game.getBottom()));
+		}
 	}
 
 	protected List<GameComponent<?>> getComponents() {

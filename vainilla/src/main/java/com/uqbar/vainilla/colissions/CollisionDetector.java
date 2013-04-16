@@ -68,8 +68,12 @@ public class CollisionDetector {
 
 		return distanceSq(centerX, centerY, rectLeft, rectTop) < radiusSq;
 	}
+	
+	public boolean collidesRectAgainstRect(Bounds b1, Bounds b2) {
+		return collidesRectAgainstRect(b1.getX(), b1.getY(), b1.getWidth(), b1.getHeight(), b2.getX(), b2.getY(), b2.getWidth(), b2.getHeight());
+	}
 
-	public boolean collidesRectAgainstRect(double x1, double y1, double d, double e, double x2, double y2,
+	private boolean collidesRectAgainstRect(double x1, double y1, double d, double e, double x2, double y2,
 			double f, double g) {
 		double right1 = x1 + d;
 		double right2 = x2 + f;

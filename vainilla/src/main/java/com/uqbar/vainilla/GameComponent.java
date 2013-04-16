@@ -37,8 +37,8 @@ public class GameComponent<SceneType extends GameScene> {
 
 	public GameComponent(Appearance appearance, double x, double y, Bounds bound) {
 		this.setAppearance(appearance);
-		this.setX(x);
-		this.setY(y);
+		this.x = x;
+		this.y = y;
 		this.setBounds(bound);
 	}
 
@@ -192,6 +192,7 @@ public class GameComponent<SceneType extends GameScene> {
 	}
 
 	public void setX(double x) {
+		this.getBounds().addX(x - this.x);
 		this.x = x;
 	}
 
@@ -200,6 +201,7 @@ public class GameComponent<SceneType extends GameScene> {
 	}
 
 	public void setY(double y) {
+//		this.getBounds().addY(this.y - y);
 		this.y = y;
 	}
 
