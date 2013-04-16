@@ -69,12 +69,12 @@ public class CollisionDetector {
 		return distanceSq(centerX, centerY, rectLeft, rectTop) < radiusSq;
 	}
 
-	public boolean collidesRectAgainstRect(double x1, double y1, int width1, int height1, double x2, double y2,
-			int width2, int height2) {
-		double right1 = x1 + width1;
-		double right2 = x2 + width2;
-		double bottom1 = y1 + height1;
-		double bottom2 = y2 + height2;
+	public boolean collidesRectAgainstRect(double x1, double y1, double d, double e, double x2, double y2,
+			double f, double g) {
+		double right1 = x1 + d;
+		double right2 = x2 + f;
+		double bottom1 = y1 + e;
+		double bottom2 = y2 + g;
 
 		return (x1 <= x2 && x2 < right1 || x2 <= x1 && x1 < right2)
 				&& (y1 <= y2 && y2 < bottom1 || y2 <= y1 && y1 < bottom2);
