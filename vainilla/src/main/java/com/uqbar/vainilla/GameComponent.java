@@ -56,7 +56,7 @@ public class GameComponent<SceneType extends GameScene> {
 
 	public void onSceneActivated() {
 	}
-
+	
 	// ****************************************************************
 	// ** OPERATIONS
 	// ****************************************************************
