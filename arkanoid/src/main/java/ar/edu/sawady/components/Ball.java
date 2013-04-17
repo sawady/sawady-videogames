@@ -34,8 +34,7 @@ public class Ball extends GameComponent<ArkanoidLevelScene> {
 		
 		if (this.getBounds().getTop() <= this.getScene().getBounds().getTop()
 				|| this.getScene().checkBlockCollide(this)
-				|| this.getScene().checkPlayerCollide(this)
-				|| this.getBounds().getBottom() >= this.getScene().getBounds().getBottom()) {
+				|| this.getScene().checkPlayerCollide(this)) {
 			this.j *= -1;
 		}
 		
@@ -44,8 +43,12 @@ public class Ball extends GameComponent<ArkanoidLevelScene> {
 			this.i *= -1;
 		}
 
-		if(this.getBounds().getBottom() >= this.getScene().getBounds().getBottom()) {
-			this.getScene().liveDown();
+		if(this.getBounds().getBottom() >= this.getScene().getBounds().getBottom() && !this.getScene().isFinished()) {
+			this.getScene().liveDown(this);
+		}
+		
+		if(this.getBounds().getBottom() >= this.getScene().getBounds().getBottom() && this.getScene().isFinished()) {
+			this.j *= -1;
 		}
 		
 	}
