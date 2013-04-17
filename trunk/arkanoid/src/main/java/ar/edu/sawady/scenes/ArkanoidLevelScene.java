@@ -26,10 +26,9 @@ public class ArkanoidLevelScene extends GameScene {
 	private static final String YOU_LOSE = "You Lose!";
 	private static final String YOU_WIN = "You Win!";
 	private List<Block> bloques;
-	private Ball ball;
 	private Player player;
 	private List<Live> lives;
-	private boolean finish = false;
+	private boolean finish;
 
 	@Override
 	public void onSetAsCurrent() {
@@ -57,7 +56,6 @@ public class ArkanoidLevelScene extends GameScene {
 		}
 		if (this.bloques.isEmpty() && !this.finish) {
 			this.addComponent(new FinishedGameText(YOU_WIN));
-			this.ball.destroy();
 			this.finish = true;			
 		}
 	}
@@ -67,6 +65,7 @@ public class ArkanoidLevelScene extends GameScene {
 		initializeLives();
 		createNewBall();
 		createPlayer();
+		this.finish = false;
 	}
 
 	private void initializeBlocks() {
@@ -103,15 +102,14 @@ public class ArkanoidLevelScene extends GameScene {
 	}
 
 	private void createNewBall() {
-		this.ball = new Ball(this.getBounds().getCenterX(), this.getBounds().getCenterY(), Ball.DEFAULT_SIZE);
-		this.addComponent(this.ball);
+		this.addComponent(new Ball(this.getBounds().getCenterX(), this.getBounds().getCenterY(), Ball.DEFAULT_SIZE));
 	}
 
-	public void liveDown() {
+	public void liveDown(Ball aBall) {
 		Live l = this.lives.get(0);
 		this.lives.remove(0);
 		l.destroy();
-		this.ball.destroy();
+		aBall.destroy();
 
 		if (!this.lives.isEmpty()) {
 			this.createNewBall();
@@ -136,12 +134,10 @@ public class ArkanoidLevelScene extends GameScene {
 	}
 
 	public boolean checkPlayerCollide(Ball aBall) {
-		boolean b = CollisionDetector.INSTANCE.collidesRectAgainstRect(aBall.getBounds(), this.player.getBounds());
-//		if (b) {
-//			 aBall.correctPos(new Bounds(this.player.getBounds().getX()+1, this.player.getBounds().getY()-1,
-//			 this.player.getBounds().getWidth(),
-//			 this.player.getBounds().getHeight()));
-//		}
-		return b;
+		return CollisionDetector.INSTANCE.collidesRectAgainstRect(aBall.getBounds(), this.player.getBounds());
+	}
+
+	public boolean isFinished() {
+		return this.finish;
 	}
 }
