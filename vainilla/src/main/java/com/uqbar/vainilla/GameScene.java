@@ -9,6 +9,7 @@ import java.util.List;
 import com.uqbar.vainilla.colissions.Bounds;
 import com.uqbar.vainilla.events.EventQueue;
 import com.uqbar.vainilla.events.GameEvent;
+import com.uqbar.vainilla.events.constants.Key;
 
 public class GameScene {
 
@@ -17,6 +18,7 @@ public class GameScene {
 	private List<GameComponent<?>> components;
 	private EventQueue eventQueue;
 	private double lastUpdateTime;
+	private boolean renderBounds = false;
 
 	// ****************************************************************
 	// ** CONSTRUCTORS
@@ -113,12 +115,17 @@ public class GameScene {
 				this.update(state);
 				component.update(state);
 				component.render(graphics);
+				if(this.renderBounds){
+					component.getBounds().render(graphics);
+				}
 			}
 		}
 	}
 
 	protected void update(DeltaState state) {
-
+		if(state.isKeyReleased(Key.F9)){
+			this.renderBounds = !this.renderBounds;
+		}
 	}
 
 	// ****************************************************************
