@@ -22,6 +22,7 @@ import com.uqbar.vainilla.exceptions.GameException;
 
 public class ArkanoidLevelScene extends GameScene {
 
+	private static final Color BLOCK_COLOR = Color.GRAY;
 	private static final String YOU_LOSE = "You Lose!";
 	private static final String YOU_WIN = "You Win!";
 	private List<Block> bloques;
@@ -81,7 +82,7 @@ public class ArkanoidLevelScene extends GameScene {
 			for (int j = 0; j < 5; j++) {
 				Block b = new Block(i * (separation_x + Block.BLOCK_WIDTH)
 						+ offsetX / 2, j * (separation_y + Block.BLOCK_HEIGHT)
-						+ 10, Color.BLUE);
+						+ 10, BLOCK_COLOR);
 				bloques.add(b);
 				this.addComponent(b);
 			}

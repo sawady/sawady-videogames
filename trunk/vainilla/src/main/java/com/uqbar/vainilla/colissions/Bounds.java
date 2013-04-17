@@ -1,5 +1,10 @@
 package com.uqbar.vainilla.colissions;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+
+import com.uqbar.vainilla.GameComponent;
+
 public class Bounds {
 
 	private double x;
@@ -56,6 +61,11 @@ public class Bounds {
 				&& bounds.getRight() <= this.getRight()
 				&& bounds.getTop() >= this.getTop()
 				&& bounds.getBottom() <= this.getBottom();
+	}
+	
+	public void render(Graphics2D graphics) {
+		graphics.setColor(Color.BLUE);
+		graphics.drawRect((int) this.getX(), (int) this.getY(), (int) this.getWidth(), (int) this.getHeight());
 	}
 	
 	public void addX(double n) {
