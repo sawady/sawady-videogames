@@ -4,11 +4,13 @@ import java.awt.Color;
 
 import ar.edu.sawady.scenes.ArkanoidLevelScene;
 
+import com.uqbar.vainilla.ConcreteDeltaState;
 import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.GameScene;
 import com.uqbar.vainilla.appearances.Circle;
 import com.uqbar.vainilla.colissions.Bounds;
+import com.uqbar.vainilla.events.GameEvent;
 
 public class Ball extends GameComponent<ArkanoidLevelScene> {
 	public static final int DEFAULT_SIZE = 20;
@@ -22,7 +24,7 @@ public class Ball extends GameComponent<ArkanoidLevelScene> {
 		this.diameter = aDiameter;
 		this.setAppearance(new Circle(this.color, aDiameter));
 	}
-
+	
 	@Override
 	public void update(DeltaState deltaState) {
 		super.update(deltaState);
@@ -41,7 +43,7 @@ public class Ball extends GameComponent<ArkanoidLevelScene> {
 				|| this.getBounds().getLeft() <= this.getScene().getBounds().getLeft()) {
 			this.i *= -1;
 		}
-		
+
 		if(this.getBounds().getBottom() >= this.getScene().getBounds().getBottom()) {
 			this.getScene().liveDown();
 		}
