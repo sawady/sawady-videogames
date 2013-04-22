@@ -8,7 +8,7 @@ import java.util.List;
 
 import ar.edu.sawady.components.Ball;
 import ar.edu.sawady.components.Block;
-import ar.edu.sawady.components.FinishedGameText;
+import ar.edu.sawady.components.GameText;
 import ar.edu.sawady.components.Player;
 import ar.edu.sawady.components.Live;
 
@@ -29,11 +29,12 @@ public class ArkanoidLevelScene extends GameScene {
 	private Player player;
 	private List<Live> lives;
 	private boolean finish;
+	private boolean started = false;
 
 	@Override
 	public void onSetAsCurrent() {
 		super.onSetAsCurrent();
-		initializeComponents();
+		this.addComponent(new GameText("ARKANOID \n \n Start with ENTER \n reset with SPACE \n move with MOUSE \n finish with Q"));
 	}
 
 	@Override
@@ -45,18 +46,24 @@ public class ArkanoidLevelScene extends GameScene {
 	@Override
 	protected void update(DeltaState state) {
 		super.update(state);
-		if (state.isKeyPressed(Key.SPACE)) {
+		if(!started && state.isKeyReleased(Key.ENTER)){
+			this.started = true;
 			this.resetScene();
 		}
-		if (state.isKeyPressed(Key.Q)) {
-			for(GameComponent<?> g : this.bloques){
-				g.destroy();
+		if(started){
+			if (state.isKeyPressed(Key.SPACE)) {
+				this.resetScene();
 			}
-			this.bloques.clear();
-		}
-		if (this.bloques.isEmpty() && !this.finish) {
-			this.addComponent(new FinishedGameText(YOU_WIN));
-			this.finish = true;			
+			if (state.isKeyPressed(Key.Q)) {
+				for(GameComponent<?> g : this.bloques){
+					g.destroy();
+				}
+				this.bloques.clear();
+			}
+			if (this.bloques.isEmpty() && !this.finish) {
+				this.addComponent(new GameText(YOU_WIN));
+				this.finish = true;			
+			}			
 		}
 	}
 
@@ -115,7 +122,7 @@ public class ArkanoidLevelScene extends GameScene {
 			this.createNewBall();
 		} else {
 			this.player.destroy();
-			this.addComponent(new FinishedGameText(YOU_LOSE));
+			this.addComponent(new GameText(YOU_LOSE));
 		}
 	}
 

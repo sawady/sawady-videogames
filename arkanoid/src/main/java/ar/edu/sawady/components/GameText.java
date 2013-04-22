@@ -9,11 +9,11 @@ import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.appearances.Label;
 
-public class FinishedGameText extends GameComponent<ArkanoidLevelScene> {
+public class GameText extends GameComponent<ArkanoidLevelScene> {
 
 	private String text;
 
-	public FinishedGameText(String text) {
+	public GameText(String text) {
 		super();
 		this.text = text;
 		this.setAppearance(new Label(new Font(Font.SANS_SERIF, Font.BOLD, 32), Color.black, text));
