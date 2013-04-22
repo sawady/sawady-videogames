@@ -124,7 +124,7 @@ public class ArkanoidLevelScene extends GameScene {
 		Iterator<Block> it = this.bloques.iterator();
 		while (!res && it.hasNext()) {
 			Block b = it.next();
-			if (CollisionDetector.INSTANCE.collidesRectAgainstRect(aBall.getBounds(), b.getBounds())) {
+			if (aBall.collide(b)) {
 				res = true;
 				b.destroy();
 				this.bloques.remove(b);
@@ -134,7 +134,11 @@ public class ArkanoidLevelScene extends GameScene {
 	}
 
 	public boolean checkPlayerCollide(Ball aBall) {
-		return CollisionDetector.INSTANCE.collidesRectAgainstRect(aBall.getBounds(), this.player.getBounds());
+		boolean res = aBall.collide(this.player);
+		if(res){
+			aBall.correctPosToOutside(this.player.getBounds());
+		}
+		return res;
 	}
 
 	public boolean isFinished() {

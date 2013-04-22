@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import com.uqbar.vainilla.appearances.Appearance;
 import com.uqbar.vainilla.appearances.Invisible;
 import com.uqbar.vainilla.colissions.Bounds;
+import com.uqbar.vainilla.colissions.CollisionDetector;
 
 public class GameComponent<SceneType extends GameScene> {
 
@@ -58,7 +59,15 @@ public class GameComponent<SceneType extends GameScene> {
 	}
 	
 	// ****************************************************************
-	// ** OPERATIONS
+	// ** COLLISION OPERATIONS
+	// ****************************************************************
+	
+	public boolean collide(GameComponent<?> g){
+		return CollisionDetector.INSTANCE.collidesRectAgainstRect(this.getBounds(), g.getBounds());
+	}
+	
+	// ****************************************************************
+	// ** MOVEMENT OPERATIONS
 	// ****************************************************************
 
 	public void move(double dx, double dy) {
@@ -79,12 +88,24 @@ public class GameComponent<SceneType extends GameScene> {
 	public void changePos(double x, double y) {
 		this.setX(x);
 		this.setY(y);
-		this.getBounds().addX(x - this.getBounds().getX());
-		this.getBounds().addY(this.getBounds().getY() - y);
+		this.getBounds().addX(this.getX() - this.getBounds().getX());
+		this.getBounds().addY(this.getBounds().getY() - this.getY());
+	}
+	
+	public void correctPosToOutside(Bounds other) {
+		if (this.getBounds().getBottom() > other.getTop()) {
+			this.move(0, other.getTop() - this.getBounds().getBottom());
+		} else if (this.getBounds().getTop() < other.getBottom()) {
+			this.move(0, this.getBounds().getTop() - other.getBottom());
+		} else if (this.getBounds().getRight() > other.getLeft()) {
+			this.move(this.getBounds().getRight() - other.getLeft(), 0);
+		} else if (this.getBounds().getLeft() < other.getRight()) {
+			this.move(this.getBounds().getLeft() - other.getRight(), 0);
+		}
 	}
 
-	public void correctPos(Bounds other) {
-		if (this.getBounds().getBottom() >  other.getBottom()) {
+	public void correctPosToInside(Bounds other) {
+		if (this.getBounds().getBottom() > other.getBottom()) {
 			this.move(0,  other.getBottom() - this.getBounds().getBottom());
 		}
 		if (this.getBounds().getTop() < other.getTop()) {

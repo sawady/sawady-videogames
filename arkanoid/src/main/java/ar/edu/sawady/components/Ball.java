@@ -30,7 +30,7 @@ public class Ball extends GameComponent<ArkanoidLevelScene> {
 		super.update(deltaState);
 		
 		this.move(deltaState.getDelta() * this.i, deltaState.getDelta() * this.j);
-		this.correctPos(this.getScene().getBounds());
+		this.correctPosToInside(this.getScene().getBounds());
 		
 		if (this.getBounds().getTop() <= this.getScene().getBounds().getTop()
 				|| this.getScene().checkBlockCollide(this)
