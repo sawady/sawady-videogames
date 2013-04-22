@@ -16,12 +16,10 @@ public class Ball extends GameComponent<ArkanoidLevelScene> {
 	public static final int DEFAULT_SIZE = 20;
 	private int i = 250;
 	private int j = 250;
-	private int diameter;
 	private Color color = Color.RED;
 
 	public Ball(double x, double y, int aDiameter) {
 		super(x, y, new Bounds(x, y, aDiameter, aDiameter));
-		this.diameter = aDiameter;
 		this.setAppearance(new Circle(this.color, aDiameter));
 	}
 	
