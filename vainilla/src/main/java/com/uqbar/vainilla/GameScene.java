@@ -123,7 +123,7 @@ public class GameScene {
 	}
 
 	protected void update(DeltaState state) {
-		if(state.isKeyPressed(Key.F9)){
+		if(state.isKeyReleased(Key.F9)){
 			this.renderBounds = !this.renderBounds;
 		}
 	}
